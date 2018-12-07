@@ -1,0 +1,56 @@
+#
+# Managed devices
+#
+
+controller ansible_connection=local
+
+[us:children]
+ny
+
+[ny:children]
+ny4
+ny5
+
+[ny4:children]
+ny4-cisco
+ny4-arista
+
+[ny4:vars]
+datacenter=ny4
+
+[ny5:children]
+ny5-cisco
+ny5-arista
+
+[ny5:vars]
+datacenter=ny5
+
+[cisco:children]
+ny4-cisco
+ny5-cisco
+
+[cisco:vars]
+vendor=Cisco Systems
+
+[arista:children]
+ny4-arista
+ny5-arista
+
+[arista:vars]
+vendor=Arista Networks
+
+[ny4-cisco]
+ny-sw01 os=cisco_nxos host_overwrite=localhost host_port=8224
+
+[ny4-arista]
+ny-sw02 os=arista_eos host_overwrite=localhost host_port=8225
+
+[ny5-arista]
+ny-sw03 os=arista_eos host_overwrite=localhost host_port=8226
+
+[ny5-cisco]
+ny-sw04 os=cisco_nxos host_overwrite=localhost host_port=8227
+
+[all:vars]
+ansible_connection=local
+contact_person=Paul Greenberg @greenpau
