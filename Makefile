@@ -1,4 +1,4 @@
-.PHONY: test ctest covdir coverage docs linter qtest clean
+.PHONY: test ctest covdir coverage docs linter qtest clean dep
 APP_VERSION:=$(shell cat VERSION | head -1)
 GIT_COMMIT:=$(shell git describe --dirty --always)
 GIT_BRANCH:=$(shell git rev-parse --abbrev-ref HEAD -- | head -1)
@@ -60,6 +60,14 @@ clean:
 	@rm -rf bin/
 
 qtest:
-	@#go test -v -run TestNewInventory ./pkg/db/*.go
+	@go test -v -run TestNewInventory ./pkg/db/*.go
 	@#go test -v -run TestNewVault ./pkg/db/*.go
-	@go test -v -run TestGetHost ./pkg/db/*.go
+	@#go test -v -run TestGetHost ./pkg/db/*.go
+
+dep:
+	@echo "Making dependencies check ..."
+	@golint || go get -u golang.org/x/lint/golint
+	@#echo "Clean GOPATH/pkg/dep/sources/ if necessary"
+	@#rm -rf $GOPATH/pkg/dep/sources/https---github.com-greenpau*
+	@dep version || go get -u github.com/golang/dep/cmd/dep
+	@dep ensure

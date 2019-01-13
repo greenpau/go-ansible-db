@@ -58,6 +58,13 @@ func TestNewInventory(t *testing.T) {
 			shouldFail: false,
 			shouldErr:  false,
 		},
+		{
+			inputFile:  "../../assets/inventory/hosts5",
+			host:       "ny-sw10",
+			size:       1,
+			shouldFail: false,
+			shouldErr:  false,
+		},
 	} {
 		inv := NewInventory()
 		var err error

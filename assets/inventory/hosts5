@@ -1,0 +1,2 @@
+[devnet]
+ny-sw10 os=cisco_nxos host_overwrite=10.10.10.10

@@ -496,6 +496,13 @@ func (inv *Inventory) GetParentGroupChains(s string) ([]string, []string, error)
 	}
 
 	rg := sortStringFloatMap(processedGroups)
+
+	if len(rg) == 1 {
+		if rg[0] == "all" && s != "all" {
+			rg = append(rg, s)
+			rc = append(rc, s)
+		}
+	}
 	return rc, rg, nil
 }
 
