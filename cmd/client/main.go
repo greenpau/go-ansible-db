@@ -85,7 +85,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("GetHosts() failed: %s", err)
 	}
+	if len(hosts) > 0 {
+		fmt.Fprintf(os.Stdout, "hosts:\n")
+	}
 	for _, h := range hosts {
-		fmt.Fprintf(os.Stdout, "%s", h.Name)
+		fmt.Fprintf(os.Stdout, "- %s\n", h.Name)
 	}
 }
