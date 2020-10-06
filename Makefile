@@ -71,3 +71,20 @@ dep:
 	@#rm -rf $GOPATH/pkg/dep/sources/https---github.com-greenpau*
 	@dep version || go get -u github.com/golang/dep/cmd/dep
 	@dep ensure
+
+release:
+	@echo "Making release"
+	@go mod tidy
+	@go mod verify
+	@if [ $(GIT_BRANCH) != "main" ]; then echo "cannot release to non-main branch $(GIT_BRANCH)" && false; fi
+	@git diff-index --quiet HEAD -- || ( echo "git directory is dirty, commit changes first" && git status && false )
+	@versioned -patch
+	@echo "Patched version"
+	@git add VERSION
+	@git commit -m "released v`cat VERSION | head -1`"
+	@git tag -a v`cat VERSION | head -1` -m "v`cat VERSION | head -1`"
+	@git push
+	@git push --tags
+	@@echo "If necessary, run the following commands:"
+	@echo "  git push --delete origin v$(APP_VERSION)"
+	@echo "  git tag --delete v$(APP_VERSION)"
