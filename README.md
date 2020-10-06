@@ -1,6 +1,8 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/greenpau/go-ansible-db)](https://goreportcard.com/report/github.com/greenpau/go-ansible-db) [![Build Status](https://travis-ci.org/greenpau/go-ansible-db.svg?branch=master)](https://travis-ci.org/greenpau/go-ansible-db) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/greenpau/go-ansible-db) [![](https://godoc.org/github.com/greenpau/go-ansible-db?status.svg)](http://godoc.org/github.com/greenpau/go-ansible-db/pkg/db)
-
 # go-ansible-db
+
+<a href="https://github.com/greenpau/go-ansible-db/actions/" target="_blank"><img src="https://github.com/greenpau/go-ansible-db/workflows/build/badge.svg?branch=main"></a>
+<a href="https://pkg.go.dev/github.com/greenpau/go-ansible-db" target="_blank"><img src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
+[![Go Report Card](https://goreportcard.com/badge/github.com/greenpau/go-ansible-db)](https://goreportcard.com/report/github.com/greenpau/go-ansible-db)
 
 Ansible Inventory and Vault management client library written in Go.
 

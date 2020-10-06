@@ -66,11 +66,12 @@ qtest:
 
 dep:
 	@echo "Making dependencies check ..."
-	@golint || go get -u golang.org/x/lint/golint
-	@#echo "Clean GOPATH/pkg/dep/sources/ if necessary"
-	@#rm -rf $GOPATH/pkg/dep/sources/https---github.com-greenpau*
-	@dep version || go get -u github.com/golang/dep/cmd/dep
-	@dep ensure
+	@go get -u golang.org/x/lint/golint
+	@go get -u golang.org/x/tools/cmd/godoc
+	@go get -u github.com/greenpau/versioned/cmd/versioned
+	@go get -u github.com/greenpau/gorpm/cmd/gorpm
+	@pip3 install yamllint --user
+	@pip3 install yq --user
 
 release:
 	@echo "Making release"
