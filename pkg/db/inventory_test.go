@@ -45,21 +45,21 @@ func TestNewInventory(t *testing.T) {
 			shouldErr:  false,
 		},
 		{
-			inputFile:  "../../assets/inventory/hosts",
+			inputFile:  "../../testdata/inventory/hosts",
 			host:       "ny-sw05",
 			size:       1,
 			shouldFail: true,
 			shouldErr:  false,
 		},
 		{
-			inputFile:  "../../assets/inventory/hosts",
+			inputFile:  "../../testdata/inventory/hosts",
 			host:       "ny-sw01",
 			size:       5,
 			shouldFail: false,
 			shouldErr:  false,
 		},
 		{
-			inputFile:  "../../assets/inventory/hosts5",
+			inputFile:  "../../testdata/inventory/hosts5",
 			host:       "ny-sw10",
 			size:       1,
 			shouldFail: false,
@@ -121,9 +121,9 @@ func TestNewInventory(t *testing.T) {
 }
 
 func TestGetHost(t *testing.T) {
-	invFile := "../../assets/inventory/hosts"
-	vltFile := "../../assets/inventory/vault.yml"
-	vltKeyFile := "../../assets/inventory/vault.key"
+	invFile := "../../testdata/inventory/hosts"
+	vltFile := "../../testdata/inventory/vault.yml"
+	vltKeyFile := "../../testdata/inventory/vault.key"
 	// Create a new inventory file.
 	inv := NewInventory()
 	// Load the contents of the inventory from an input file.
@@ -226,5 +226,62 @@ func TestGetHost(t *testing.T) {
 		for _, g := range host.GroupChains {
 			t.Logf("  - %s", g)
 		}
+	}
+}
+
+func TestGetHostsWithFilter(t *testing.T) {
+	invFile := "../../testdata/inventory/hosts"
+	vltFile := "../../testdata/inventory/vault.yml"
+	vltKeyFile := "../../testdata/inventory/vault.key"
+	// Create a new inventory file.
+	inv := NewInventory()
+	// Load the contents of the inventory from an input file.
+	if err := inv.LoadFromFile(invFile); err != nil {
+		t.Fatalf("error reading inventory: %s", err)
+	}
+	// Create a new vault file.
+	vlt := NewVault()
+	// Read the password for the vault file from an input file.
+	if err := vlt.LoadPasswordFromFile(vltKeyFile); err != nil {
+		t.Fatalf("error reading vault key file: %s", err)
+	}
+	// Load the contents of the vault from an input file.
+	if err := vlt.LoadFromFile(vltFile); err != nil {
+		t.Fatalf("error reading vault: %s", err)
+	}
+
+	for i, test := range []struct {
+		hostFilter  interface{}
+		groupFilter interface{}
+		count       int
+	}{
+		{
+			hostFilter: "ny-sw01",
+			count:      1,
+		},
+		{
+			hostFilter: "ny-sw0[12]",
+			count:      2,
+		},
+		{
+			hostFilter: []string{"ny-sw01", "ny-sw02"},
+			count:      2,
+		},
+		{
+			hostFilter:  "ny-sw01",
+			groupFilter: "arista",
+			count:       3,
+		},
+	} {
+		// Get host variables for a specific host.
+		hosts, err := inv.GetHostsWithFilter(test.hostFilter, test.groupFilter)
+		if err != nil {
+			t.Fatalf("FAIL: Test %d, error getting hosts from inventory: %s", i, err)
+		}
+		if len(hosts) != test.count {
+			t.Fatalf("FAIL: Test %d, filtered hosts count mismatch: %d (expected) vs. %d (received)", i, test.count, len(hosts))
+		}
+		t.Logf("PASS: Test %d, host filters: %v, group filters: %v, hosts: %d", i, test.hostFilter, test.groupFilter, len(hosts))
+
 	}
 }

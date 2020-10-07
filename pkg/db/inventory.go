@@ -18,6 +18,7 @@ import (
 	"fmt"
 	//"github.com/davecgh/go-spew/spew"
 	"io/ioutil"
+	"regexp"
 	"strings"
 	"sync/atomic"
 )
@@ -553,4 +554,71 @@ func (inv *Inventory) GetGroup(s string) (*InventoryGroup, error) {
 		}
 	}
 	return nil, fmt.Errorf("Group %s not found", s)
+}
+
+// GetHostsWithFilter returns a list of InventoryHost instances filtered by
+// input host and group patterns. Returns the host matching the patterns only.
+func (inv *Inventory) GetHostsWithFilter(hostFilter, groupFilter interface{}) ([]*InventoryHost, error) {
+	if hostFilter == nil && groupFilter == nil {
+		return inv.Hosts, nil
+	}
+	hosts := []*InventoryHost{}
+	for _, host := range inv.Hosts {
+		hostMatched := false
+		if hostFilter != nil {
+			var filters []string
+			// see if a host matches the pattern or patterns
+			switch hostFilter.(type) {
+			case string:
+				filters = append(filters, hostFilter.(string))
+			case []string:
+				filters = hostFilter.([]string)
+			default:
+				return hosts, fmt.Errorf("unsupporter host filter type: %T", hostFilter)
+			}
+			for _, filter := range filters {
+				filterPattern, err := regexp.Compile(filter)
+				if err != nil {
+					return hosts, fmt.Errorf("filter contains invalid pattern: %s, error: %s", filter, err)
+				}
+				if filterPattern.MatchString(host.Name) {
+					hostMatched = true
+					break
+				}
+			}
+		}
+
+		if groupFilter != nil {
+			var filters []string
+			switch groupFilter.(type) {
+			case string:
+				filters = append(filters, groupFilter.(string))
+			case []string:
+				filters = groupFilter.([]string)
+			default:
+				return hosts, fmt.Errorf("unsupporter group filter type: %T", groupFilter)
+			}
+			for _, filter := range filters {
+				if hostMatched {
+					break
+				}
+				filterPattern, err := regexp.Compile(filter)
+				if err != nil {
+					return hosts, fmt.Errorf("filter contains invalid pattern: %s, error: %s", filter, err)
+				}
+
+				for _, group := range host.Groups {
+					if filterPattern.MatchString(group) {
+						hostMatched = true
+						break
+					}
+				}
+			}
+		}
+
+		if hostMatched {
+			hosts = append(hosts, host)
+		}
+	}
+	return hosts, nil
 }

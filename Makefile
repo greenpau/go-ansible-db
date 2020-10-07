@@ -34,12 +34,12 @@ linter:
 
 test: covdir linter
 	@go test $(VERBOSE) -coverprofile=.coverage/coverage.out ./pkg/db/*.go
-	@bin/$(BINARY) -log.level debug -inventory ./assets/inventory/hosts \
-		-vault ./assets/inventory/vault.yml -vault.key.file ./assets/inventory/vault.key
+	@bin/$(BINARY) -log.level debug -inventory ./testdata/inventory/hosts \
+		-vault ./testdata/inventory/vault.yml -vault.key.file ./testdata/inventory/vault.key
 
 ctest: covdir linter
-	@richgo version || go get -u github.com/kyoh86/richgo
-	@time richgo test $(VERBOSE) "${TEST}" -coverprofile=.coverage/coverage.out ./pkg/db/*.go
+	@#richgo version || go get -u github.com/kyoh86/richgo
+	@time richgo test $(VERBOSE) -coverprofile=.coverage/coverage.out ./pkg/db/*.go
 
 covdir:
 	@mkdir -p .coverage
@@ -60,9 +60,10 @@ clean:
 	@rm -rf bin/
 
 qtest:
-	@go test -v -run TestNewInventory ./pkg/db/*.go
+	@#go test -v -run TestNewInventory ./pkg/db/*.go
 	@#go test -v -run TestNewVault ./pkg/db/*.go
 	@#go test -v -run TestGetHost ./pkg/db/*.go
+	@richgo test -v -run GetHostsWithFilter ./pkg/...
 
 dep:
 	@echo "Making dependencies check ..."

@@ -6,7 +6,16 @@
 
 Ansible Inventory and Vault management client library written in Go.
 
-## Why?
+<!-- begin-markdown-toc -->
+## Table of Contents
+
+* [Overview](#overview)
+* [Getting Started](#getting-started)
+* [Inventory Search](#inventory-search)
+
+<!-- end-markdown-toc -->
+
+## Overview
 
 Ansible inventory and secrets management is being handled well by native
 Ansible tools. The inventory format is well defined and the vault usage
@@ -55,6 +64,8 @@ if err := vlt.LoadFromFile(vltFile); err != nil {
     t.Fatalf("error reading vault: %s", err)
 }
 ```
+
+## Inventory Search
 
 After that, the code retrieves the inventory record for `ny-sw01` and makes
 a subsequent call to retrieve the credentials for accessing `ny-sw01`.

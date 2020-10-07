@@ -33,15 +33,15 @@ func TestNewVault(t *testing.T) {
 	}{
 		{
 			host:       "ny-sw01",
-			inputFile:  "../../assets/inventory/vault.yml",
-			keyFile:    "../../assets/inventory/vault.key",
+			inputFile:  "../../testdata/inventory/vault.yml",
+			keyFile:    "../../testdata/inventory/vault.key",
 			size:       4,
 			shouldFail: false,
 			shouldErr:  false,
 		},
 		{
 			host:       "ny-sw01",
-			inputFile:  "../../assets/inventory/vault.yml",
+			inputFile:  "../../testdata/inventory/vault.yml",
 			key:        "7f017fde-e88b-42c5-89df-a7c8f9de981d",
 			size:       4,
 			shouldFail: false,
