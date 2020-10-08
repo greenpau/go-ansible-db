@@ -26,30 +26,33 @@ import (
 // Inventory is the contents of Ansible inventory file.
 type Inventory struct {
 	Raw       []byte
-	HostsRef  map[string]string
-	GroupsRef map[string]bool
-	Hosts     []*InventoryHost
-	Groups    []*InventoryGroup
+	HostsRef  map[string]string `json:"host_refs,omitempty" yaml:"host_refs,omitempty"`
+	GroupsRef map[string]bool   `json:"group_refs,omitempty" yaml:"group_refs,omitempty"`
+	Hosts     []*InventoryHost  `json:"hosts,omitempty" yaml:"hosts,omitempty"`
+	Groups    []*InventoryGroup `json:"groups,omitempty" yaml:"groups,omitempty"`
 }
 
 // InventoryHost is a host in Ansible inventory
 type InventoryHost struct {
-	Name        string
-	Parent      string
-	Variables   map[string]string
-	Groups      []string
-	GroupChains []string
+	Name        string            `json:"name,omitempty" yaml:"name,omitempty"`
+	Parent      string            `json:"parent_group,omitempty" yaml:"parent_group,omitempty"`
+	Variables   map[string]string `json:"variables,omitempty" yaml:"variables,omitempty"`
+	Groups      []string          `json:"groups,omitempty" yaml:"groups,omitempty"`
+	GroupChains []string          `json:"group_chains,omitempty" yaml:"group_chains,omitempty"`
 }
 
 // InventoryGroup is an group of InventoryHost instances.
 type InventoryGroup struct {
-	Name      string
-	Ancestors []string
-	Variables map[string]string
-	Counters  struct {
-		Hosts  uint64
-		Groups uint64
-	}
+	Name      string                 `json:"name,omitempty" yaml:"name,omitempty"`
+	Ancestors []string               `json:"parent_groups,omitempty" yaml:"parent_groups,omitempty"`
+	Variables map[string]string      `json:"variables,omitempty" yaml:"variables,omitempty"`
+	Counters  InventoryGroupCounters `json:"counters,omitempty" yaml:"counters,omitempty"`
+}
+
+// InventoryGroupCounters are counters associated with InventoryGroup
+type InventoryGroupCounters struct {
+	Hosts  uint64 `json:"hosts,omitempty" yaml:"hosts,omitempty"`
+	Groups uint64 `json:"groups,omitempty" yaml:"groups,omitempty"`
 }
 
 // NewInventory returns a pointer to Inventory.

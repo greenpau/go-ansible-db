@@ -71,13 +71,13 @@ type VaultKey struct {
 
 // VaultCredential is a decoded credential from a Vault.
 type VaultCredential struct {
-	Description     string `xml:"description" json:"description" yaml:"description"`
-	Regex           string `xml:"regex" json:"regex" yaml:"regex"`
-	Username        string `xml:"username" json:"username" yaml:"username"`
-	Password        string `xml:"password" json:"password" yaml:"password"`
-	EnabledPassword string `xml:"password_enable" json:"password_enable" yaml:"password_enable"`
-	Priority        int    `xml:"priority" json:"priority" yaml:"priority"`
-	Default         bool   `xml:"default" json:"default" yaml:"default"`
+	Description     string `xml:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+	Regex           string `xml:"regex,omitempty" json:"regex,omitempty" yaml:"regex,omitempty"`
+	Username        string `xml:"username,omitempty" json:"username,omitempty" yaml:"username,omitempty"`
+	Password        string `xml:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty"`
+	EnabledPassword string `xml:"password_enable,omitempty" json:"password_enable,omitempty" yaml:"password_enable,omitempty"`
+	Priority        int    `xml:"priority,omitempty" json:"priority,omitempty" yaml:"priority,omitempty"`
+	Default         bool   `xml:"default,omitempty" json:"default,omitempty" yaml:"default,omitempty"`
 }
 
 // NewVault returns a pointer to Vault.
