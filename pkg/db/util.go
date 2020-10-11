@@ -14,7 +14,11 @@
 
 package db
 
-import "sort"
+import (
+	"os/user"
+	"sort"
+	"strings"
+)
 
 type stringFloatMap struct {
 	m map[string]float64
@@ -44,4 +48,15 @@ func sortStringFloatMap(m map[string]float64) []string {
 	}
 	sort.Sort(sfm)
 	return sfm.s
+}
+
+func expandFilePath(s string) string {
+	if strings.HasPrefix(s, "~/") {
+		usr, err := user.Current()
+		if err != nil {
+			return s
+		}
+		s = strings.Replace(s, "~", usr.HomeDir, 1)
+	}
+	return s
 }

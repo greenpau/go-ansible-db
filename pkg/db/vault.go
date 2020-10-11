@@ -201,6 +201,7 @@ func (v *Vault) LoadFromBytes(b []byte) error {
 
 // LoadFromFile loads vault data from a file.
 func (v *Vault) LoadFromFile(fp string) error {
+	fp = expandFilePath(fp)
 	b, err := ioutil.ReadFile(fp)
 	if err != nil {
 		return err
@@ -210,6 +211,7 @@ func (v *Vault) LoadFromFile(fp string) error {
 
 // LoadPasswordFromFile loads unlock password for the vault from a file.
 func (v *Vault) LoadPasswordFromFile(fp string) error {
+	fp = expandFilePath(fp)
 	b, err := ioutil.ReadFile(fp)
 	if err != nil {
 		return err

@@ -218,12 +218,13 @@ func (inv *Inventory) LoadFromBytes(b []byte) error {
 }
 
 // LoadFromFile loads inventory data from a file.
-func (inv *Inventory) LoadFromFile(s string) error {
-	b, err := ioutil.ReadFile(s)
+func (inv *Inventory) LoadFromFile(fp string) error {
+	fp = expandFilePath(fp)
+	b, err := ioutil.ReadFile(fp)
 	if err != nil {
 		return err
 	}
-	s = string(b[:])
+	s := string(b[:])
 	return inv.parseString(s)
 }
 
