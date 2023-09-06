@@ -1,4 +1,4 @@
-project_name: go-redfish-api-idrac-client
+project_name: go-ansible-db-client
 
 release:
   github:
