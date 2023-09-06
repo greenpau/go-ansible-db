@@ -67,10 +67,10 @@ qtest:
 
 dep:
 	@echo "Making dependencies check ..."
-	@go get -u golang.org/x/lint/golint
-	@go get -u golang.org/x/tools/cmd/godoc
-	@go get -u github.com/greenpau/versioned/cmd/versioned
-	@go get -u github.com/greenpau/gorpm/cmd/gorpm
+	@go install golang.org/x/lint/golint@latest
+	@go install github.com/kyoh86/richgo@latest
+	@go install github.com/greenpau/versioned/cmd/versioned@latest
+	@go install github.com/greenpau/gorpm/cmd/gorpm@latest
 	@pip3 install yamllint --user
 	@pip3 install yq --user
 
